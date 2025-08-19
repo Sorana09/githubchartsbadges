@@ -1,0 +1,13 @@
+# Maven / Gradle build
+target/
+build/
+
+# IDE settings
+.idea/
+*.iml
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
