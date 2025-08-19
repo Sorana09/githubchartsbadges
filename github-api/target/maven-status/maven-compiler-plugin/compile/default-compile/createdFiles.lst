@@ -1,0 +1,3 @@
+com/example/service/ExtractRepoAndOwner.class
+com/example/service/GithubService.class
+com/example/domain/RepoInformation.class
