@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e864f6ef-e4eb-47df-b642-2f5053fe879c" name="Changes" comment="refactoring">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/d7ffe8bf-fa49-4041-aafb-11f90b830c86.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="e864f6ef-e4eb-47df-b642-2f5053fe879c" name="Changes" comment="refactoring" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,7 +18,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/backend" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -30,12 +26,12 @@
     &quot;assignee&quot;: &quot;Sorana09&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Sorana09/generatingGithubStat-Badges.git&quot;,
-    &quot;accountId&quot;: &quot;3862496c-cdb8-4429-8408-c7f30e052c22&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Sorana09/githubchartsbadges.git",
+    "accountId": "3862496c-cdb8-4429-8408-c7f30e052c22"
   }
-}</component>
+}]]></component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
 }</component>
@@ -129,7 +125,7 @@
       <option name="presentableId" value="Default" />
       <updated>1755596928693</updated>
       <workItem from="1755596930325" duration="3920000" />
-      <workItem from="1755600963100" duration="8949000" />
+      <workItem from="1755600963100" duration="9318000" />
     </task>
     <task id="LOCAL-00001" summary="refactoring">
       <option name="closed" value="true" />
