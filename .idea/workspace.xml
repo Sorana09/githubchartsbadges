@@ -4,22 +4,36 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e864f6ef-e4eb-47df-b642-2f5053fe879c" name="Changes" comment="refactoring">
+    <list default="true" id="e864f6ef-e4eb-47df-b642-2f5053fe879c" name="Changes" comment="adding new charts">
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/controller/CustomErrorController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/templates/404.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/d7ffe8bf-fa49-4041-aafb-11f90b830c86.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/d7ffe8bf-fa49-4041-aafb-11f90b830c86.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend" beforeDir="false" afterPath="$PROJECT_DIR$/backend" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/GithubmonitoringApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/GithubmonitoringApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/builder/SVGBadgeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/builder/SVGBadgeFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/controller/BadgeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/controller/BadgeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/badgeLibrary/src/main/java/com/example/service/BadgeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/badgeLibrary/src/main/java/com/example/service/BadgeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/badgeLibrary/target/badgeLibrary-0.0.1-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/badgeLibrary/target/badgeLibrary-0.0.1-SNAPSHOT.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/badgeLibrary/target/classes/com/example/service/BadgeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/badgeLibrary/target/classes/com/example/service/BadgeService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chartLibrary/src/main/java/com/example/domain/ChartInformation.java" beforeDir="false" afterPath="$PROJECT_DIR$/chartLibrary/src/main/java/com/example/domain/ChartInformation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chartLibrary/src/main/java/com/example/domain/Theme.java" beforeDir="false" afterPath="$PROJECT_DIR$/github-api/src/main/java/com/example/domain/Theme.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chartLibrary/src/main/java/com/example/service/ChartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/chartLibrary/src/main/java/com/example/service/ChartService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chartLibrary/src/main/java/com/example/service/GenerateChartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/chartLibrary/src/main/java/com/example/service/GenerateChartService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chartLibrary/target/chartLibrary-0.0.1-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/chartLibrary/target/chartLibrary-0.0.1-SNAPSHOT.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chartLibrary/target/classes/com/example/service/ChartService.class" beforeDir="false" afterPath="$PROJECT_DIR$/chartLibrary/target/classes/com/example/service/ChartService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chartLibrary/target/classes/com/example/service/GenerateChartService$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/chartLibrary/target/classes/com/example/service/GenerateChartService$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chartLibrary/target/classes/com/example/service/GenerateChartService.class" beforeDir="false" afterPath="$PROJECT_DIR$/chartLibrary/target/classes/com/example/service/GenerateChartService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/github-api/src/main/java/com/example/service/ExtractRepoAndOwner.java" beforeDir="false" afterPath="$PROJECT_DIR$/github-api/src/main/java/com/example/service/ExtractRepoAndOwner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chartLibrary/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/chartLibrary/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chartLibrary/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/chartLibrary/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/github-api/src/main/java/com/example/config/RedisConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/github-api/src/main/java/com/example/config/RedisConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/github-api/src/main/java/com/example/service/GithubService.java" beforeDir="false" afterPath="$PROJECT_DIR$/github-api/src/main/java/com/example/service/GithubService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/github-api/target/classes/com/example/config/RedisConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/github-api/target/classes/com/example/config/RedisConfig.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/github-api/target/classes/com/example/service/GithubService.class" beforeDir="false" afterPath="$PROJECT_DIR$/github-api/target/classes/com/example/service/GithubService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/github-api/target/github-api-0.0.1-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/github-api/target/github-api-0.0.1-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/github-api/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/github-api/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +107,7 @@
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "settings.sync",
+    "settings.editor.selected.configurable": "preferences.keymap",
     "to.speed.mode.migration.done": "true",
     "vue.rearranger.settings.migration": "true"
   }
@@ -102,6 +116,10 @@
     <option name="notificationShown" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/backend/src/main/resources/templates" />
+      <recent name="$PROJECT_DIR$/backend/src/main/resources/templates/error" />
+    </key>
     <key name="MoveInnerDialog.RECENTS_KEY">
       <recent name="com.example.domain" />
     </key>
@@ -145,7 +163,7 @@
       <option name="presentableId" value="Default" />
       <updated>1755596928693</updated>
       <workItem from="1755596930325" duration="3920000" />
-      <workItem from="1755600963100" duration="28861000" />
+      <workItem from="1755600963100" duration="32217000" />
     </task>
     <task id="LOCAL-00001" summary="refactoring">
       <option name="closed" value="true" />
@@ -163,7 +181,15 @@
       <option name="project" value="LOCAL" />
       <updated>1755680914117</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="adding new charts">
+      <option name="closed" value="true" />
+      <created>1755690310861</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1755690310861</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -171,7 +197,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="refactoring" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactoring" />
+    <MESSAGE value="adding new charts" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding new charts" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
@@ -24,6 +25,7 @@ public class ChartService {
         return theme == null ? Theme.LIGHT : theme;
     }
 
+    @Cacheable(value = "chart:commits-yearly", key = "#repoUrl + ':' + #theme")
     public byte[] getCommitPerYearChart(String repoUrl, Theme theme) {
         try {
             Map<Integer, Integer> commitsPerYear = githubService.getCommitsPerYearPerProject(repoUrl);
@@ -50,6 +52,7 @@ public class ChartService {
         }
     }
 
+    @Cacheable(value = "chart:user-contrib", key = "#username + ':' + #theme")
     public byte[] getUserContributionBreakdown(String username, Theme theme) {
         try {
             Map<String, Integer> stats = githubService.getUserStats(username);
@@ -73,6 +76,7 @@ public class ChartService {
         }
     }
 
+    @Cacheable(value = "chart:top-stars", key = "#username + ':' + #topN + ':' + #theme")
     public byte[] getTopStarredRepos(String username, int topN, Theme theme) {
         try {
             Map<String, Integer> topStars = githubService.getTopStarredRepos(username, topN);
@@ -99,6 +103,7 @@ public class ChartService {
     }
 
 
+    @Cacheable(value = "chart:commits-monthly", key = "#repoUrl + ':' + #months + ':' + #theme")
     public byte[] getCommitsPerMonthLineChart(String repoUrl, int months, Theme theme) {
         try {
             Map<String, Integer> perMonth = githubService.getCommitsPerMonthPerProject(repoUrl, months);
@@ -125,6 +130,7 @@ public class ChartService {
         }
     }
 
+    @Cacheable(value = "chart:code-churn", key = "#repoUrl + ':' + #months + ':' + #theme")
     public byte[] getCodeChurnChart(String repoUrl, int months, Theme theme) {
         try {
             LinkedHashMap<String, int[]> perMonth = githubService.getCodeChurnPerMonth(repoUrl, months);
@@ -151,6 +157,7 @@ public class ChartService {
         }
     }
 
+    @Cacheable(value = "chart:code-churn-rollup", key = "#repoUrls + ':' + #months + ':' + #theme")
     public byte[] getCodeChurnChartForRepos(List<String> repoUrls, int months, Theme theme) {
         try {
             LinkedHashMap<String, int[]> agg = new LinkedHashMap<>();
@@ -187,6 +194,7 @@ public class ChartService {
         }
     }
 
+    @Cacheable(value = "chart:filetype-churn", key = "#repoUrl + ':' + #limitCommits + ':' + #topN + ':' + #theme")
     public byte[] getFileTypeChurnChart(String repoUrl, int limitCommits, int topN, Theme theme) {
         try {
             LinkedHashMap<String, int[]> churn = githubService.getFileTypeChurn(repoUrl, limitCommits);

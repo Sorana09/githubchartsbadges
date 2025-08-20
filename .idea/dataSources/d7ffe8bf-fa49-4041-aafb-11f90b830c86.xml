@@ -2,7 +2,7 @@
 <dataSource name="0@localhost">
   <database-model serializer="dbm" dbms="REDIS" family-id="REDIS" format-version="4.53">
     <root id="1">
-      <ServerVersion>7.2.10</ServerVersion>
+      <ServerVersion>7.4.5</ServerVersion>
     </root>
     <schema id="2" parent="1" name="0">
       <Current>1</Current>
@@ -22,5 +22,10 @@
     <schema id="15" parent="1" name="7"/>
     <schema id="16" parent="1" name="8"/>
     <schema id="17" parent="1" name="9"/>
+    <string id="18" parent="2" name="github:user-stats::Sorana09"/>
+    <string id="19" parent="2" name="github:user-stats::madalinnec"/>
+    <string id="20" parent="2" name="language::http://github.com/Sorana09/time-box"/>
+    <string id="21" parent="2" name="user-stats-badge::Sorana09"/>
+    <string id="22" parent="2" name="user-stats-badge::madalinnec"/>
   </database-model>
 </dataSource>

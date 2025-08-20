@@ -61,6 +61,8 @@ public  class GenerateChartService {
                     barPlot.setRangeGridlinePaint(new Color(200, 200, 200));
                 }
                 barPlot.setOutlineVisible(false);
+                // Ensure no plot-level drop shadow is applied (JFreeChart 1.5+)
+                try { barPlot.setShadowGenerator(null); } catch (NoSuchMethodError ignored) { }
 
                 BarRenderer barRenderer = (BarRenderer) barPlot.getRenderer();
                 barRenderer.setShadowVisible(false);
@@ -131,6 +133,8 @@ public  class GenerateChartService {
                     linePlot.setDomainGridlinePaint(new Color(200, 200, 200));
                 }
                 linePlot.setOutlineVisible(false);
+                // Ensure no plot-level drop shadow is applied (JFreeChart 1.5+)
+                try { linePlot.setShadowGenerator(null); } catch (NoSuchMethodError ignored) { }
 
                 LineAndShapeRenderer lineRenderer = (LineAndShapeRenderer) linePlot.getRenderer();
                 lineRenderer.setDrawOutlines(true);
