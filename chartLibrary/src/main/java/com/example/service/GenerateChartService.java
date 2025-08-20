@@ -10,7 +10,10 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 
 public  class GenerateChartService {
 
@@ -18,6 +21,18 @@ public  class GenerateChartService {
         Theme theme = info.getTheme();
         return theme != null && theme == Theme.DARK;
     }
+
+    public byte[] generateChart(ChartInformation info) {
+       try {
+           BufferedImage chartImage = this.buildChart(info).createBufferedImage(800, 400);
+           ByteArrayOutputStream baos = new ByteArrayOutputStream();
+           ImageIO.write(chartImage, "png", baos);
+           return baos.toByteArray();
+       } catch (Exception e) {
+           e.printStackTrace();
+           return null;
+       }
+   }
 
     public JFreeChart buildChart(ChartInformation info) {
         JFreeChart chart;
@@ -51,7 +66,7 @@ public  class GenerateChartService {
                 barRenderer.setShadowVisible(false);
                 barRenderer.setMaximumBarWidth(0.1);
                 barRenderer.setItemMargin(0.02);
-                // Color palette for multiple series
+
                 Color[] series = isDark(info)
                         ? new Color[]{new Color(0x7aa2f7), new Color(0xf7768e), new Color(0x9ece6a), new Color(0xe0af68)}
                         : new Color[]{new Color(0x1f77b4), new Color(0xd62728), new Color(0x2ca02c), new Color(0xff7f0e)};

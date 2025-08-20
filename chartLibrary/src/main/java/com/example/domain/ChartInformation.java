@@ -16,5 +16,5 @@ public class ChartInformation {
     PieDataset pieDataset;
     String categoryAxisLabel;
     String valueAxisLabel;
-    Theme theme; // LIGHT or DARK; may be null (defaults to LIGHT)
+    Theme theme;
 }

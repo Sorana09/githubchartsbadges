@@ -5,14 +5,12 @@ import com.example.domain.ChartType;
 import com.example.domain.Theme;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 import org.springframework.stereotype.Service;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -20,12 +18,10 @@ import java.util.Map;
 @Slf4j
 public class ChartService {
     private final GithubService githubService;
+    private final GenerateChartService chartService = new GenerateChartService();
 
-    // Helper: default to LIGHT if null
-    private Theme normalize(Theme theme) { return theme == null ? Theme.LIGHT : theme; }
-
-    public byte[] getCommitPerYearChart(String repoUrl) {
-        return getCommitPerYearChart(repoUrl, Theme.LIGHT);
+    private Theme normalize(Theme theme) {
+        return theme == null ? Theme.LIGHT : theme;
     }
 
     public byte[] getCommitPerYearChart(String repoUrl, Theme theme) {
@@ -33,50 +29,37 @@ public class ChartService {
             Map<Integer, Integer> commitsPerYear = githubService.getCommitsPerYearPerProject(repoUrl);
 
             DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-            for (Map.Entry<Integer, Integer> entry : commitsPerYear.entrySet()) {
-                dataset.addValue(entry.getValue(), "Commits", entry.getKey().toString());
-            }
+            commitsPerYear.forEach((year, commits) ->
+                    dataset.addValue(commits, "Commits", year.toString())
+            );
 
-            JFreeChart barChart = new GenerateChartService().buildChart(
+            return chartService.generateChart(
                     ChartInformation.builder()
                             .chartType(ChartType.BAR)
-                            .title(String.format("Commits per Year for %s", ExtractRepoAndOwner.extractOwnerAndRepo(repoUrl).getRepo()))
+                            .title(String.format("Commits per Year for %s",
+                                    ExtractRepoAndOwner.extractOwnerAndRepo(repoUrl).getRepo()))
                             .categoryAxisLabel("Year")
                             .valueAxisLabel("Commits")
                             .categoryDataset(dataset)
                             .theme(normalize(theme))
                             .build()
             );
-
-            BufferedImage chartImage = barChart.createBufferedImage(800, 400);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(chartImage, "png", baos);
-
-            return baos.toByteArray();
-
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error generating commit per year chart", e);
             return null;
         }
-    }
-
-    public byte[] getUserContributionBreakdown(String username) {
-        return getUserContributionBreakdown(username, Theme.LIGHT);
     }
 
     public byte[] getUserContributionBreakdown(String username, Theme theme) {
         try {
             Map<String, Integer> stats = githubService.getUserStats(username);
-            int commits = stats.getOrDefault("commits", 0);
-            int prs = stats.getOrDefault("prs", 0);
-            int issues = stats.getOrDefault("issues", 0);
 
-            org.jfree.data.general.DefaultPieDataset<String> pieDataset = new org.jfree.data.general.DefaultPieDataset<>();
-            pieDataset.setValue("Commits", commits);
-            pieDataset.setValue("PRs", prs);
-            pieDataset.setValue("Issues", issues);
+            DefaultPieDataset<String> pieDataset = new DefaultPieDataset<>();
+            pieDataset.setValue("Commits", stats.getOrDefault("commits", 0));
+            pieDataset.setValue("PRs", stats.getOrDefault("prs", 0));
+            pieDataset.setValue("Issues", stats.getOrDefault("issues", 0));
 
-            JFreeChart pieChart = new GenerateChartService().buildChart(
+            return chartService.generateChart(
                     ChartInformation.builder()
                             .chartType(ChartType.PIE)
                             .title(String.format("%s: Contributions Breakdown", username))
@@ -84,30 +67,22 @@ public class ChartService {
                             .theme(normalize(theme))
                             .build()
             );
-
-            BufferedImage chartImage = pieChart.createBufferedImage(600, 400);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(chartImage, "png", baos);
-            return baos.toByteArray();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error generating contribution breakdown chart", e);
             return null;
         }
-    }
-
-    public byte[] getTopStarredRepos(String username, int topN) {
-        return getTopStarredRepos(username, topN, Theme.LIGHT);
     }
 
     public byte[] getTopStarredRepos(String username, int topN, Theme theme) {
         try {
             Map<String, Integer> topStars = githubService.getTopStarredRepos(username, topN);
-            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-            for (Map.Entry<String, Integer> entry : topStars.entrySet()) {
-                dataset.addValue(entry.getValue(), "Stars", entry.getKey());
-            }
 
-            JFreeChart barChart = new GenerateChartService().buildChart(
+            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+            topStars.forEach((repo, stars) ->
+                    dataset.addValue(stars, "Stars", repo)
+            );
+
+            return chartService.generateChart(
                     ChartInformation.builder()
                             .chartType(ChartType.BAR)
                             .title(String.format("Top %d Starred Repositories for %s", topN, username))
@@ -117,62 +92,50 @@ public class ChartService {
                             .theme(normalize(theme))
                             .build()
             );
-
-            BufferedImage chartImage = barChart.createBufferedImage(800, 400);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(chartImage, "png", baos);
-            return baos.toByteArray();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error generating top starred repos chart", e);
             return null;
         }
     }
 
-    public byte[] getCommitsPerMonthLineChart(String repoUrl, int months) {
-        return getCommitsPerMonthLineChart(repoUrl, months, Theme.LIGHT);
-    }
 
     public byte[] getCommitsPerMonthLineChart(String repoUrl, int months, Theme theme) {
         try {
             Map<String, Integer> perMonth = githubService.getCommitsPerMonthPerProject(repoUrl, months);
-            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-            for (Map.Entry<String, Integer> e : perMonth.entrySet()) {
-                dataset.addValue(e.getValue(), "Commits", e.getKey());
-            }
 
-            JFreeChart lineChart = new GenerateChartService().buildChart(
+            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+            perMonth.forEach((month, commits) ->
+                    dataset.addValue(commits, "Commits", month)
+            );
+
+            return chartService.generateChart(
                     ChartInformation.builder()
                             .chartType(ChartType.LINE)
-                            .title(String.format("Commits per Month (last %d) for %s", months, ExtractRepoAndOwner.extractOwnerAndRepo(repoUrl).getRepo()))
+                            .title(String.format("Commits per Month (last %d) for %s",
+                                    months, ExtractRepoAndOwner.extractOwnerAndRepo(repoUrl).getRepo()))
                             .categoryAxisLabel("Month")
                             .valueAxisLabel("Commits")
                             .categoryDataset(dataset)
                             .theme(normalize(theme))
                             .build()
             );
-
-            BufferedImage chartImage = lineChart.createBufferedImage(800, 400);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(chartImage, "png", baos);
-            return baos.toByteArray();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error generating commits per month chart", e);
             return null;
         }
     }
 
-    // Code churn (additions vs deletions per month)
     public byte[] getCodeChurnChart(String repoUrl, int months, Theme theme) {
         try {
             LinkedHashMap<String, int[]> perMonth = githubService.getCodeChurnPerMonth(repoUrl, months);
-            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-            for (Map.Entry<String, int[]> e : perMonth.entrySet()) {
-                int[] v = e.getValue();
-                dataset.addValue(v[0], "Additions", e.getKey());
-                dataset.addValue(Math.abs(v[1]), "Deletions", e.getKey());
-            }
 
-            JFreeChart barChart = new GenerateChartService().buildChart(
+            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+            perMonth.forEach((month, values) -> {
+                dataset.addValue(values[0], "Additions", month);
+                dataset.addValue(Math.abs(values[1]), "Deletions", month);
+            });
+
+            return chartService.generateChart(
                     ChartInformation.builder()
                             .chartType(ChartType.BAR)
                             .title(String.format("Code Churn (last %d months)", months))
@@ -182,36 +145,33 @@ public class ChartService {
                             .theme(normalize(theme))
                             .build()
             );
-            BufferedImage chartImage = barChart.createBufferedImage(800, 400);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(chartImage, "png", baos);
-            return baos.toByteArray();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error generating code churn chart", e);
             return null;
         }
     }
 
-    // Multi-repo rollup for churn
-    public byte[] getCodeChurnChartForRepos(java.util.List<String> repoUrls, int months, Theme theme) {
+    public byte[] getCodeChurnChartForRepos(List<String> repoUrls, int months, Theme theme) {
         try {
-            // Aggregate per-month additions/deletions across repos
             LinkedHashMap<String, int[]> agg = new LinkedHashMap<>();
+
             for (String repoUrl : repoUrls) {
                 LinkedHashMap<String, int[]> pm = githubService.getCodeChurnPerMonth(repoUrl, months);
-                for (Map.Entry<String, int[]> e : pm.entrySet()) {
-                    int[] cur = agg.getOrDefault(e.getKey(), new int[]{0,0});
-                    cur[0] += e.getValue()[0];
-                    cur[1] += e.getValue()[1];
-                    agg.put(e.getKey(), cur);
-                }
+                pm.forEach((month, values) -> {
+                    int[] cur = agg.getOrDefault(month, new int[]{0, 0});
+                    cur[0] += values[0];
+                    cur[1] += values[1];
+                    agg.put(month, cur);
+                });
             }
+
             DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-            for (Map.Entry<String, int[]> e : agg.entrySet()) {
-                dataset.addValue(e.getValue()[0], "Additions", e.getKey());
-                dataset.addValue(Math.abs(e.getValue()[1]), "Deletions", e.getKey());
-            }
-            JFreeChart barChart = new GenerateChartService().buildChart(
+            agg.forEach((month, values) -> {
+                dataset.addValue(values[0], "Additions", month);
+                dataset.addValue(Math.abs(values[1]), "Deletions", month);
+            });
+
+            return chartService.generateChart(
                     ChartInformation.builder()
                             .chartType(ChartType.BAR)
                             .title(String.format("Code Churn Rollup (last %d months)", months))
@@ -221,32 +181,29 @@ public class ChartService {
                             .theme(normalize(theme))
                             .build()
             );
-            BufferedImage chartImage = barChart.createBufferedImage(800, 400);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(chartImage, "png", baos);
-            return baos.toByteArray();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error generating code churn rollup chart", e);
             return null;
         }
     }
 
-    // File-type churn (by extension) for last N commits; bar chart by total changes
     public byte[] getFileTypeChurnChart(String repoUrl, int limitCommits, int topN, Theme theme) {
         try {
             LinkedHashMap<String, int[]> churn = githubService.getFileTypeChurn(repoUrl, limitCommits);
-            // reduce to topN by total changes
-            java.util.List<Map.Entry<String, int[]>> list = new java.util.ArrayList<>(churn.entrySet());
+
+            List<Map.Entry<String, int[]>> list = new java.util.ArrayList<>(churn.entrySet());
             list = list.subList(0, Math.min(topN > 0 ? topN : 8, list.size()));
+
             DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-            for (Map.Entry<String, int[]> e : list) {
-                String ext = e.getKey();
-                int adds = e.getValue()[0];
-                int dels = Math.abs(e.getValue()[1]);
+            list.forEach(entry -> {
+                String ext = entry.getKey();
+                int adds = entry.getValue()[0];
+                int dels = Math.abs(entry.getValue()[1]);
                 dataset.addValue(adds, "Additions", ext);
                 dataset.addValue(dels, "Deletions", ext);
-            }
-            JFreeChart barChart = new GenerateChartService().buildChart(
+            });
+
+            return chartService.generateChart(
                     ChartInformation.builder()
                             .chartType(ChartType.BAR)
                             .title(String.format("File-type Churn (last %d commits)", limitCommits))
@@ -256,12 +213,8 @@ public class ChartService {
                             .theme(normalize(theme))
                             .build()
             );
-            BufferedImage chartImage = barChart.createBufferedImage(800, 400);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(chartImage, "png", baos);
-            return baos.toByteArray();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error generating file-type churn chart", e);
             return null;
         }
     }
