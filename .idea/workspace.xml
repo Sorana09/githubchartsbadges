@@ -4,7 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e864f6ef-e4eb-47df-b642-2f5053fe879c" name="Changes" comment="refactoring" />
+    <list default="true" id="e864f6ef-e4eb-47df-b642-2f5053fe879c" name="Changes" comment="refactoring">
+      <change afterPath="$PROJECT_DIR$/chartLibrary/src/main/java/com/example/domain/Theme.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend" beforeDir="false" afterPath="$PROJECT_DIR$/backend" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/builder/SVGBadgeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/builder/SVGBadgeFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/controller/BadgeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/controller/BadgeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/controller/ImageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/controller/ImageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/badgeLibrary/src/main/java/com/example/service/BadgeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/badgeLibrary/src/main/java/com/example/service/BadgeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/badgeLibrary/target/classes/com/example/service/BadgeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/badgeLibrary/target/classes/com/example/service/BadgeService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chartLibrary/src/main/java/com/example/domain/ChartInformation.java" beforeDir="false" afterPath="$PROJECT_DIR$/chartLibrary/src/main/java/com/example/domain/ChartInformation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chartLibrary/src/main/java/com/example/service/ChartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/chartLibrary/src/main/java/com/example/service/ChartService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chartLibrary/src/main/java/com/example/service/GenerateChartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/chartLibrary/src/main/java/com/example/service/GenerateChartService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chartLibrary/target/classes/com/example/domain/ChartInformation$ChartInformationBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/chartLibrary/target/classes/com/example/domain/ChartInformation$ChartInformationBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chartLibrary/target/classes/com/example/domain/ChartInformation.class" beforeDir="false" afterPath="$PROJECT_DIR$/chartLibrary/target/classes/com/example/domain/ChartInformation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chartLibrary/target/classes/com/example/service/ChartService.class" beforeDir="false" afterPath="$PROJECT_DIR$/chartLibrary/target/classes/com/example/service/ChartService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chartLibrary/target/classes/com/example/service/GenerateChartService$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/chartLibrary/target/classes/com/example/service/GenerateChartService$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chartLibrary/target/classes/com/example/service/GenerateChartService.class" beforeDir="false" afterPath="$PROJECT_DIR$/chartLibrary/target/classes/com/example/service/GenerateChartService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/github-api/src/main/java/com/example/domain/Commit.java" beforeDir="false" afterPath="$PROJECT_DIR$/github-api/src/main/java/com/example/domain/Commit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/github-api/src/main/java/com/example/service/GithubService.java" beforeDir="false" afterPath="$PROJECT_DIR$/github-api/src/main/java/com/example/service/GithubService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/github-api/target/classes/com/example/domain/Commit$InnerCommit$Author.class" beforeDir="false" afterPath="$PROJECT_DIR$/github-api/target/classes/com/example/domain/Commit$InnerCommit$Author.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/github-api/target/classes/com/example/domain/Commit$InnerCommit.class" beforeDir="false" afterPath="$PROJECT_DIR$/github-api/target/classes/com/example/domain/Commit$InnerCommit.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/github-api/target/classes/com/example/domain/Commit.class" beforeDir="false" afterPath="$PROJECT_DIR$/github-api/target/classes/com/example/domain/Commit.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/github-api/target/classes/com/example/service/GithubService.class" beforeDir="false" afterPath="$PROJECT_DIR$/github-api/target/classes/com/example/service/GithubService.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,7 +42,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/backend" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -26,12 +50,12 @@
     &quot;assignee&quot;: &quot;Sorana09&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Sorana09/githubchartsbadges.git",
-    "accountId": "3862496c-cdb8-4429-8408-c7f30e052c22"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Sorana09/githubchartsbadges.git&quot;,
+    &quot;accountId&quot;: &quot;3862496c-cdb8-4429-8408-c7f30e052c22&quot;
   }
-}]]></component>
+}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
 }</component>
@@ -125,7 +149,7 @@
       <option name="presentableId" value="Default" />
       <updated>1755596928693</updated>
       <workItem from="1755596930325" duration="3920000" />
-      <workItem from="1755600963100" duration="9318000" />
+      <workItem from="1755600963100" duration="22306000" />
     </task>
     <task id="LOCAL-00001" summary="refactoring">
       <option name="closed" value="true" />

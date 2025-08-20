@@ -85,12 +85,11 @@ public class BadgeService {
         log.debug("Stats for {}: Stars={}, Commits={}, PRs={}, Issues={}, Repos={}, Grade={}",
                 username, stars, commits, prs, issues, repositories, grade);
 
-
-
         return List.of(username,stars,commits,prs,issues,repositories,grade);
 
     }
 
-
-
+    public String getLatestWorkflowStatus(String repoUrl, String workflow) throws Exception {
+        return githubService.getLatestWorkflowStatus(repoUrl, workflow);
+    }
 }

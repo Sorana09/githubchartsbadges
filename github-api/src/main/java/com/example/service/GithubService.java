@@ -136,7 +136,7 @@ public class GithubService {
         }
     }
 
-    private List<Map<String, Object>> fetchAllUserRepos(String username) {
+    public List<Map<String, Object>> fetchAllUserRepos(String username) {
         List<Map<String, Object>> allRepos = new ArrayList<>();
         int page = 1;
         int perPage = 100;
@@ -265,5 +265,232 @@ public class GithubService {
         if (score >= 50) return "C";
         if (score >= 25) return "D";
         return "F";
+    }
+    public LinkedHashMap<String, Integer> getTopStarredRepos(String username, int limit) {
+        List<Map<String, Object>> repos = fetchAllUserRepos(username);
+
+        List<Map.Entry<String, Integer>> entries = new ArrayList<>();
+        for (Map<String, Object> repo : repos) {
+            String name = (String) repo.getOrDefault("name", "");
+            int stars = ((Number) repo.getOrDefault("stargazers_count", 0)).intValue();
+            if (name != null && !name.isBlank()) {
+                entries.add(new AbstractMap.SimpleEntry<>(name, stars));
+            }
+        }
+
+        entries.sort((a, b) -> Integer.compare(b.getValue(), a.getValue()));
+        if (limit > 0 && entries.size() > limit) {
+            entries = entries.subList(0, limit);
+        }
+        LinkedHashMap<String, Integer> result = new LinkedHashMap<>();
+        for (Map.Entry<String, Integer> e : entries) {
+            result.put(e.getKey(), e.getValue());
+        }
+        return result;
+    }
+
+    public LinkedHashMap<String, Integer> getCommitsPerMonthPerProject(String repoUrl, int lastNMonths) throws Exception {
+        if (lastNMonths <= 0) lastNMonths = 12;
+        if (repoUrl == null || !repoUrl.contains("github.com")) {
+            throw new IllegalArgumentException("Invalid GitHub repository URL");
+        }
+
+        String[] parts = new URI(repoUrl).getPath().split("/");
+        if (parts.length < 3) throw new IllegalArgumentException("Could not extract owner/repo");
+        String owner = parts[1];
+        String repo = parts[2].replaceAll("\\.git$", "");
+
+        // Aggregate commits by YYYY-MM
+        Map<String, Integer> counts = new HashMap<>();
+
+        ZonedDateTime now = ZonedDateTime.now();
+        ZonedDateTime firstMonthStart = now.minusMonths(lastNMonths - 1L).withDayOfMonth(1).toLocalDate().atStartOfDay(now.getZone());
+
+        boolean done = false;
+        int page = 1;
+        while (!done) {
+            String url = String.format(
+                    "https://api.github.com/repos/%s/%s/commits?per_page=%d&page=%d",
+                    owner, repo, ExtractRepoAndOwner.PER_PAGE, page
+            );
+
+            HttpEntity<Void> entity = new HttpEntity<>(extractRepoAndOwner.createHeaders());
+            ResponseEntity<Commit[]> response = restTemplate.exchange(url, HttpMethod.GET, entity, Commit[].class);
+            Commit[] commits = response.getBody();
+            if (commits == null || commits.length == 0) break;
+
+            for (Commit c : commits) {
+                try {
+                    String dateStr = c.getCommit().getAuthor().getDate();
+                    if (dateStr == null || dateStr.isBlank()) continue;
+                    ZonedDateTime zdt = ZonedDateTime.parse(dateStr);
+                    if (zdt.isBefore(firstMonthStart)) { done = true; break; }
+                    String key = String.format("%04d-%02d", zdt.getYear(), zdt.getMonthValue());
+                    counts.put(key, counts.getOrDefault(key, 0) + 1);
+                } catch (Exception e) {
+                    log.warn("Skipping invalid date: {}", e.getMessage());
+                }
+            }
+
+            if (done) break;
+            if (commits.length < ExtractRepoAndOwner.PER_PAGE) break;
+            page++;
+        }
+
+        // Build ordered map covering all months in range (oldest -> newest)
+        LinkedHashMap<String, Integer> ordered = new LinkedHashMap<>();
+        for (int i = lastNMonths - 1; i >= 0; i--) {
+            ZonedDateTime m = now.minusMonths(i);
+            String key = String.format("%04d-%02d", m.getYear(), m.getMonthValue());
+            ordered.put(key, counts.getOrDefault(key, 0));
+        }
+        return ordered;
+    }
+
+
+    public LinkedHashMap<String, int[]> getCodeChurnPerMonth(String repoUrl, int lastNMonths) throws Exception {
+        if (lastNMonths <= 0) lastNMonths = 12;
+        if (repoUrl == null || !repoUrl.contains("github.com")) {
+            throw new IllegalArgumentException("Invalid GitHub repository URL");
+        }
+        String[] parts = new URI(repoUrl).getPath().split("/");
+        if (parts.length < 3) throw new IllegalArgumentException("Could not extract owner/repo");
+        String owner = parts[1];
+        String repo = parts[2].replaceAll("\\.git$", "");
+
+        String url = String.format("https://api.github.com/repos/%s/%s/stats/code_frequency", owner, repo);
+        HttpEntity<Void> entity = new HttpEntity<>(extractRepoAndOwner.createHeaders());
+
+        // Response is an array of [week_unix, additions, deletions]
+        ResponseEntity<List> response = restTemplate.exchange(url, HttpMethod.GET, entity, List.class);
+        List weeks = response.getBody();
+        Map<String, int[]> monthAgg = new HashMap<>();
+        if (weeks != null) {
+            for (Object w : weeks) {
+                if (w instanceof List) {
+                    List row = (List) w;
+                    if (row.size() >= 3) {
+                        long weekEpoch = ((Number) row.get(0)).longValue();
+                        int additions = ((Number) row.get(1)).intValue();
+                        int deletions = ((Number) row.get(2)).intValue();
+                        ZonedDateTime zdt = ZonedDateTime.ofInstant(java.time.Instant.ofEpochSecond(weekEpoch), java.time.ZoneId.systemDefault());
+                        String key = String.format("%04d-%02d", zdt.getYear(), zdt.getMonthValue());
+                        int[] agg = monthAgg.getOrDefault(key, new int[]{0,0});
+                        agg[0] += additions;
+                        agg[1] += deletions; // deletions are negative per API docs; we keep sign
+                        monthAgg.put(key, agg);
+                    }
+                }
+            }
+        }
+
+        ZonedDateTime now = ZonedDateTime.now();
+        LinkedHashMap<String, int[]> ordered = new LinkedHashMap<>();
+        for (int i = lastNMonths - 1; i >= 0; i--) {
+            ZonedDateTime m = now.minusMonths(i);
+            String key = String.format("%04d-%02d", m.getYear(), m.getMonthValue());
+            int[] v = monthAgg.getOrDefault(key, new int[]{0,0});
+            ordered.put(key, new int[]{v[0], v[1]});
+        }
+        return ordered;
+    }
+
+    public String getLatestWorkflowStatus(String repoUrl, String workflow) throws Exception {
+        if (repoUrl == null || !repoUrl.contains("github.com")) {
+            throw new IllegalArgumentException("Invalid GitHub repository URL");
+        }
+        String[] parts = new URI(repoUrl).getPath().split("/");
+        if (parts.length < 3) throw new IllegalArgumentException("Could not extract owner/repo");
+        String owner = parts[1];
+        String repo = parts[2].replaceAll("\\.git$", "");
+
+        String url = String.format("https://api.github.com/repos/%s/%s/actions/runs?per_page=1", owner, repo);
+        HttpEntity<Void> entity = new HttpEntity<>(extractRepoAndOwner.createHeaders());
+        try {
+            ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+            Map body = response.getBody();
+            if (body != null && body.containsKey("workflow_runs")) {
+                List runs = (List) body.get("workflow_runs");
+                if (runs != null && !runs.isEmpty()) {
+                    Map run = (Map) runs.get(0);
+                    Object name = run.get("name");
+                    Object conclusion = run.get("conclusion");
+                    Object status = run.get("status");
+                    String targetName = workflow;
+                    if (targetName != null && name != null && !name.toString().equalsIgnoreCase(targetName)) {
+                        // If name doesn't match, we could filter, but for simplicity, use latest anyway
+                    }
+                    if (conclusion != null) return conclusion.toString();
+                    if (status != null) return status.toString();
+                }
+            }
+        } catch (HttpClientErrorException e) {
+            log.warn("Failed to fetch workflow runs: {}", e.getMessage());
+        }
+        return "unknown";
+    }
+
+    public LinkedHashMap<String, int[]> getFileTypeChurn(String repoUrl, int limitCommits) throws Exception {
+        if (limitCommits <= 0) limitCommits = 50;
+        if (repoUrl == null || !repoUrl.contains("github.com")) {
+            throw new IllegalArgumentException("Invalid GitHub repository URL");
+        }
+        String[] parts = new URI(repoUrl).getPath().split("/");
+        if (parts.length < 3) throw new IllegalArgumentException("Could not extract owner/repo");
+        String owner = parts[1];
+        String repo = parts[2].replaceAll("\\.git$", "");
+
+        Map<String, int[]> agg = new HashMap<>();
+        int fetched = 0;
+        int page = 1;
+        while (fetched < limitCommits) {
+            String listUrl = String.format("https://api.github.com/repos/%s/%s/commits?per_page=%d&page=%d", owner, repo, ExtractRepoAndOwner.PER_PAGE, page);
+            HttpEntity<Void> entity = new HttpEntity<>(extractRepoAndOwner.createHeaders());
+            ResponseEntity<Commit[]> response = restTemplate.exchange(listUrl, HttpMethod.GET, entity, Commit[].class);
+            Commit[] commits = response.getBody();
+            if (commits == null || commits.length == 0) break;
+            for (Commit c : commits) {
+                if (fetched >= limitCommits) break;
+                fetched++;
+                String sha = c.getSha();
+                if (sha == null) continue;
+                try {
+                    String detailUrl = String.format("https://api.github.com/repos/%s/%s/commits/%s", owner, repo, sha);
+                    ResponseEntity<Map> detailResp = restTemplate.exchange(detailUrl, HttpMethod.GET, entity, Map.class);
+                    Map body = detailResp.getBody();
+                    if (body != null && body.containsKey("files")) {
+                        java.util.List files = (java.util.List) body.get("files");
+                        for (Object fo : files) {
+                            Map f = (Map) fo;
+                            String filename = (String) f.get("filename");
+                            int additions = ((Number) f.getOrDefault("additions", 0)).intValue();
+                            int deletions = ((Number) f.getOrDefault("deletions", 0)).intValue();
+                            String ext = "other";
+                            if (filename != null && filename.contains(".")) {
+                                String e = filename.substring(filename.lastIndexOf('.') + 1).toLowerCase();
+                                if (!e.isBlank()) ext = e;
+                            }
+                            int[] cur = agg.getOrDefault(ext, new int[]{0,0});
+                            cur[0] += additions;
+                            cur[1] += deletions;
+                            agg.put(ext, cur);
+                        }
+                    }
+                } catch (Exception ex) {
+                    log.warn("Failed to fetch commit details for {}: {}", sha, ex.getMessage());
+                }
+            }
+            if (commits.length < ExtractRepoAndOwner.PER_PAGE) break;
+            page++;
+        }
+
+        // Sort by total changes desc and keep ordering
+        java.util.List<Map.Entry<String, int[]>> list = new java.util.ArrayList<>(agg.entrySet());
+        list.sort((a,b) -> Integer.compare(b.getValue()[0]+b.getValue()[1], a.getValue()[0]+a.getValue()[1]));
+        LinkedHashMap<String, int[]> ordered = new LinkedHashMap<>();
+        for (Map.Entry<String, int[]> e : list) {
+            ordered.put(e.getKey(), e.getValue());
+        }
+        return ordered;
     }
 }

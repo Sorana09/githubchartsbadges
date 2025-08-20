@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.domain.ChartInformation;
+import com.example.domain.Theme;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
@@ -11,9 +12,12 @@ import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 
 import java.awt.*;
 
-import static com.example.domain.ChartType.*;
-
 public  class GenerateChartService {
+
+    private static boolean isDark(ChartInformation info) {
+        Theme theme = info.getTheme();
+        return theme != null && theme == Theme.DARK;
+    }
 
     public JFreeChart buildChart(ChartInformation info) {
         JFreeChart chart;
@@ -32,16 +36,28 @@ public  class GenerateChartService {
                 );
 
                 CategoryPlot barPlot = chart.getCategoryPlot();
-                barPlot.setBackgroundPaint(Color.WHITE);
-                barPlot.setDomainGridlinesVisible(true);
-                barPlot.setRangeGridlinePaint(new Color(200, 200, 200));
+                if (isDark(info)) {
+                    barPlot.setBackgroundPaint(new Color(0x1e1e1e));
+                    barPlot.setDomainGridlinesVisible(true);
+                    barPlot.setRangeGridlinePaint(new Color(0x3a3a3a));
+                } else {
+                    barPlot.setBackgroundPaint(Color.WHITE);
+                    barPlot.setDomainGridlinesVisible(true);
+                    barPlot.setRangeGridlinePaint(new Color(200, 200, 200));
+                }
                 barPlot.setOutlineVisible(false);
 
                 BarRenderer barRenderer = (BarRenderer) barPlot.getRenderer();
-                barRenderer.setSeriesPaint(0, Color.BLACK);
                 barRenderer.setShadowVisible(false);
                 barRenderer.setMaximumBarWidth(0.1);
                 barRenderer.setItemMargin(0.02);
+                // Color palette for multiple series
+                Color[] series = isDark(info)
+                        ? new Color[]{new Color(0x7aa2f7), new Color(0xf7768e), new Color(0x9ece6a), new Color(0xe0af68)}
+                        : new Color[]{new Color(0x1f77b4), new Color(0xd62728), new Color(0x2ca02c), new Color(0xff7f0e)};
+                for (int s = 0; s < 8; s++) {
+                    barRenderer.setSeriesPaint(s, series[s % series.length]);
+                }
                 break;
 
             case PIE:
@@ -54,19 +70,25 @@ public  class GenerateChartService {
                 );
 
                 PiePlot piePlot = (PiePlot) chart.getPlot();
-                piePlot.setBackgroundPaint(Color.WHITE);
+                if (isDark(info)) {
+                    piePlot.setBackgroundPaint(new Color(0x1e1e1e));
+                    piePlot.setLabelPaint(new Color(0xdddddd));
+                } else {
+                    piePlot.setBackgroundPaint(Color.WHITE);
+                    piePlot.setLabelPaint(Color.DARK_GRAY);
+                }
                 piePlot.setOutlineVisible(false);
                 piePlot.setShadowPaint(null);
                 piePlot.setLabelBackgroundPaint(null);
                 piePlot.setLabelOutlinePaint(null);
                 piePlot.setLabelShadowPaint(null);
-                piePlot.setLabelPaint(Color.DARK_GRAY);
 
                 if (info.getPieDataset() != null && info.getPieDataset().getItemCount() > 0) {
-                    piePlot.setSectionPaint(info.getPieDataset().getKey(0), Color.BLACK);
-                    for (int i = 1; i < info.getPieDataset().getItemCount(); i++) {
-                        piePlot.setSectionPaint(info.getPieDataset().getKey(i),
-                                new Color(50 + i * 30, 50 + i * 30, 50 + i * 30));
+                    Color[] colors = isDark(info)
+                            ? new Color[]{new Color(0x7aa2f7), new Color(0xf7768e), new Color(0x9ece6a), new Color(0xe0af68), new Color(0xbb9af7)}
+                            : new Color[]{new Color(0x1f77b4), new Color(0xd62728), new Color(0x2ca02c), new Color(0xff7f0e), new Color(0x9467bd)};
+                    for (int i = 0; i < info.getPieDataset().getItemCount(); i++) {
+                        piePlot.setSectionPaint(info.getPieDataset().getKey(i), colors[i % colors.length]);
                     }
                 }
                 break;
@@ -84,16 +106,25 @@ public  class GenerateChartService {
                 );
 
                 CategoryPlot linePlot = chart.getCategoryPlot();
-                linePlot.setBackgroundPaint(Color.WHITE);
-                linePlot.setRangeGridlinePaint(new Color(200, 200, 200));
-                linePlot.setDomainGridlinePaint(new Color(200, 200, 200));
+                if (isDark(info)) {
+                    linePlot.setBackgroundPaint(new Color(0x1e1e1e));
+                    linePlot.setRangeGridlinePaint(new Color(0x3a3a3a));
+                    linePlot.setDomainGridlinePaint(new Color(0x3a3a3a));
+                } else {
+                    linePlot.setBackgroundPaint(Color.WHITE);
+                    linePlot.setRangeGridlinePaint(new Color(200, 200, 200));
+                    linePlot.setDomainGridlinePaint(new Color(200, 200, 200));
+                }
                 linePlot.setOutlineVisible(false);
 
                 LineAndShapeRenderer lineRenderer = (LineAndShapeRenderer) linePlot.getRenderer();
-                lineRenderer.setSeriesPaint(0, Color.BLACK);
                 lineRenderer.setDrawOutlines(true);
                 lineRenderer.setSeriesStroke(0, new BasicStroke(2f));
                 lineRenderer.setDefaultShapesFilled(true);
+                lineRenderer.setSeriesPaint(0, isDark(info) ? new Color(0x7aa2f7) : new Color(0x1f77b4));
+                for (int s = 1; s < 8; s++) {
+                    lineRenderer.setSeriesPaint(s, isDark(info) ? new Color(0x9ece6a) : new Color(0x2ca02c));
+                }
                 break;
 
             default:
