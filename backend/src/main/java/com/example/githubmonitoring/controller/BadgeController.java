@@ -77,9 +77,18 @@ public class BadgeController {
 
     @GetMapping("/created")
     public ResponseEntity<String> created(@RequestParam String repoUrl,
-                                          @RequestParam(required = false) String theme) throws Exception {
+                                         @RequestParam(required = false) String theme,
+                                         @RequestParam(required = false) Integer width) throws Exception {
         String v = badgeService.getCreatedAt(repoUrl);
-        String svg = SVGBadge.buildBadge("created", v, "#64748b", normTheme(theme));
+        var builder = SVGBadge.builder()
+                .label("created")
+                .value(v)
+                .color("#64748b")
+                .theme(normTheme(theme));
+        if (width != null) {
+            builder.width(Math.max(10, width));
+        }
+        String svg = builder.build();
         return svg(svg);
     }
 
