@@ -4,6 +4,7 @@ import com.example.domain.Commit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -61,7 +62,7 @@ public class GithubService {
     }
 
 
-    @org.springframework.cache.annotation.Cacheable(value = "github:commits-yearly", key = "#repoUrl")
+    @Cacheable(value = "github:commits-yearly", key = "#repoUrl")
     public Map<Integer, Integer> getCommitsPerYearPerProject(String repoUrl) throws Exception {
         String[] ownerRepo = extractOwnerRepo(repoUrl);
         String owner = ownerRepo[0], repo = ownerRepo[1];
@@ -92,7 +93,7 @@ public class GithubService {
         return commitsPerYear;
     }
 
-    @org.springframework.cache.annotation.Cacheable(value = "github:user-stats", key = "#username")
+    @Cacheable(value = "github:user-stats", key = "#username")
     public Map<String, Integer> getUserStats(String username) {
         Map<String, Integer> stats = new HashMap<>();
         try {
@@ -130,7 +131,7 @@ public class GithubService {
     }
 
     @SuppressWarnings("unchecked")
-    @org.springframework.cache.annotation.Cacheable(value = "github:user-repos", key = "#username")
+    @Cacheable(value = "github:user-repos", key = "#username")
     public List<Map<String, Object>> fetchAllUserRepos(String username) {
         List<Map<String, Object>> allRepos = new ArrayList<>();
         int page = 1, perPage = 100;
@@ -186,7 +187,14 @@ public class GithubService {
     }
 
     private Map<String, Integer> getDefaultStats() {
-        return Map.of("stars", 0, "commits", 0, "prs", 0, "issues", 0, "contributions", 0, "repositories", 0);
+        return java.util.Map.of(
+                "stars", 0,
+                "commits", 0,
+                "issues", 0,
+                "prs", 0,
+                "contributions", 0,
+                "repositories", 0
+        );
     }
 
     public String calculateGrade(Map<String, Integer> stats) {
@@ -207,7 +215,7 @@ public class GithubService {
         return "F";
     }
 
-    @org.springframework.cache.annotation.Cacheable(value = "github:top-stars", key = "#username + ':' + #limit")
+    @Cacheable(value = "github:top-stars", key = "#username + ':' + #limit")
     public LinkedHashMap<String, Integer> getTopStarredRepos(String username, int limit) {
         return fetchAllUserRepos(username).stream()
                 .map(repo -> new AbstractMap.SimpleEntry<>(
@@ -223,7 +231,7 @@ public class GithubService {
                 ));
     }
 
-    @org.springframework.cache.annotation.Cacheable(value = "github:commits-monthly", key = "#repoUrl + ':' + #lastNMonths")
+    @Cacheable(value = "github:commits-monthly", key = "#repoUrl + ':' + #lastNMonths")
     public LinkedHashMap<String, Integer> getCommitsPerMonthPerProject(String repoUrl, int lastNMonths) throws Exception {
         if (lastNMonths <= 0) lastNMonths = 12;
         String[] ownerRepo = extractOwnerRepo(repoUrl);
@@ -261,7 +269,7 @@ public class GithubService {
         return ordered;
     }
 
-    @org.springframework.cache.annotation.Cacheable(value = "github:code-churn-monthly", key = "#repoUrl + ':' + #lastNMonths")
+    @Cacheable(value = "github:code-churn-monthly", key = "#repoUrl + ':' + #lastNMonths")
     public LinkedHashMap<String, int[]> getCodeChurnPerMonth(String repoUrl, int lastNMonths) throws Exception {
         if (lastNMonths <= 0) lastNMonths = 12;
         String[] ownerRepo = extractOwnerRepo(repoUrl);
@@ -296,7 +304,7 @@ public class GithubService {
         return ordered;
     }
 
-    @org.springframework.cache.annotation.Cacheable(value = "github:workflow-status", key = "#repoUrl + ':' + (#workflow == null ? '' : #workflow)")
+    @Cacheable(value = "github:workflow-status", key = "#repoUrl + ':' + (#workflow == null ? '' : #workflow)")
     public String getLatestWorkflowStatus(String repoUrl, String workflow) throws Exception {
         String[] ownerRepo = extractOwnerRepo(repoUrl);
         String owner = ownerRepo[0], repo = ownerRepo[1];
@@ -317,7 +325,7 @@ public class GithubService {
         return "unknown";
     }
 
-    @org.springframework.cache.annotation.Cacheable(value = "github:filetype-churn", key = "#repoUrl + ':' + #limitCommits")
+    @Cacheable(value = "github:filetype-churn", key = "#repoUrl + ':' + #limitCommits")
     public LinkedHashMap<String, int[]> getFileTypeChurn(String repoUrl, int limitCommits) throws Exception {
         if (limitCommits <= 0) limitCommits = 50;
         String[] ownerRepo = extractOwnerRepo(repoUrl);

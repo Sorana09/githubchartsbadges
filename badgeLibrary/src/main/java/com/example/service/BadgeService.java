@@ -4,6 +4,7 @@ import com.example.domain.GithubRepoInformation;
 import com.example.domain.RepoInformation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -19,50 +20,50 @@ public class BadgeService {
     private final GithubService githubService;
     private  final RestTemplate restTemplate = new RestTemplate();
 
-    @org.springframework.cache.annotation.Cacheable(value = "stars", key = "#repoUrl")
+    @Cacheable(value = "stars", key = "#repoUrl")
     public int getStars(String repoUrl) throws Exception {
         GithubRepoInformation repoInfo = getRepoInfo(repoUrl);
         return repoInfo != null ? repoInfo.getStars() : 0;
     }
 
-    @org.springframework.cache.annotation.Cacheable(value = "language", key = "#repoUrl")
+    @Cacheable(value = "language", key = "#repoUrl")
     public String getLanguage(String repoUrl) throws Exception {
         GithubRepoInformation repoInfo = getRepoInfo(repoUrl);
         return repoInfo != null ? repoInfo.getLanguage() : "";
     }
 
-    @org.springframework.cache.annotation.Cacheable(value = "issues", key = "#repoUrl")
+    @Cacheable(value = "issues", key = "#repoUrl")
     public int getIssues(String repoUrl) throws Exception {
         GithubRepoInformation repoInfo = getRepoInfo(repoUrl);
         return repoInfo != null ? repoInfo.getOpenIssues() : 0;
     }
 
-    @org.springframework.cache.annotation.Cacheable(value = "forks", key = "#repoUrl")
+    @Cacheable(value = "forks", key = "#repoUrl")
     public int getForks(String repoUrl) throws Exception {
         GithubRepoInformation repoInfo = getRepoInfo(repoUrl);
         return repoInfo != null ? repoInfo.getForks() : 0;
     }
 
-    @org.springframework.cache.annotation.Cacheable(value = "watchers", key = "#repoUrl")
+    @Cacheable(value = "watchers", key = "#repoUrl")
     public int getWatchers(String repoUrl) throws Exception {
         GithubRepoInformation repoInfo = getRepoInfo(repoUrl);
         return repoInfo != null ? repoInfo.getWatchers() : 0;
     }
 
-    @org.springframework.cache.annotation.Cacheable(value = "last-commit-date", key = "#repoUrl")
+    @Cacheable(value = "last-commit-date", key = "#repoUrl")
     public String getLastCommitDate(String repoUrl) throws Exception {
         GithubRepoInformation repoInfo = getRepoInfo(repoUrl);
         return repoInfo != null ? repoInfo.getLastCommitDate() : "N/A";
     }
 
-    @org.springframework.cache.annotation.Cacheable(value = "created", key = "#repoUrl")
+    @Cacheable(value = "created", key = "#repoUrl")
     public String getCreatedAt(String repoUrl) throws Exception {
         GithubRepoInformation repoInfo = getRepoInfo(repoUrl);
         return repoInfo != null ? repoInfo.getCreatedAt() : "N/A";
     }
 
 
-    @org.springframework.cache.annotation.Cacheable(value = "repo-info", key = "#repoUrl")
+    @Cacheable(value = "repo-info", key = "#repoUrl")
     public GithubRepoInformation getRepoInfo(String repoUrl) throws Exception {
         RepoInformation parts = ExtractRepoAndOwner.extractOwnerAndRepo(repoUrl);
         String url = String.format("https://api.github.com/repos/%s/%s", parts.getOwner(), parts.getRepo());
@@ -74,7 +75,7 @@ public class BadgeService {
         return repoInfo;
     }
 
-    @org.springframework.cache.annotation.Cacheable(value = "user-stats-badge", key = "#username")
+    @Cacheable(value = "user-stats-badge", key = "#username")
     public List<Serializable> getUserStats(String username){
         log.info("Generating badge for user: {}", username);
 

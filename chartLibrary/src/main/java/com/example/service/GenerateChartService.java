@@ -9,6 +9,7 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.chart.renderer.category.StandardBarPainter;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -46,26 +47,24 @@ public  class GenerateChartService {
                         info.getCategoryDataset(),
                         PlotOrientation.VERTICAL,
                         false,
-                        true,
+                        false,
                         false
                 );
 
                 CategoryPlot barPlot = chart.getCategoryPlot();
                 if (isDark(info)) {
                     barPlot.setBackgroundPaint(new Color(0x1e1e1e));
-                    barPlot.setDomainGridlinesVisible(true);
-                    barPlot.setRangeGridlinePaint(new Color(0x3a3a3a));
                 } else {
                     barPlot.setBackgroundPaint(Color.WHITE);
-                    barPlot.setDomainGridlinesVisible(true);
-                    barPlot.setRangeGridlinePaint(new Color(200, 200, 200));
                 }
+                barPlot.setDomainGridlinesVisible(false);
                 barPlot.setOutlineVisible(false);
-                // Ensure no plot-level drop shadow is applied (JFreeChart 1.5+)
-                try { barPlot.setShadowGenerator(null); } catch (NoSuchMethodError ignored) { }
 
                 BarRenderer barRenderer = (BarRenderer) barPlot.getRenderer();
                 barRenderer.setShadowVisible(false);
+                barRenderer.setBarPainter(new StandardBarPainter());
+                barRenderer.setGradientPaintTransformer(null);
+                barRenderer.setDrawBarOutline(false);
                 barRenderer.setMaximumBarWidth(0.1);
                 barRenderer.setItemMargin(0.02);
 
