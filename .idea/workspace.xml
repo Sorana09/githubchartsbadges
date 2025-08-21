@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e864f6ef-e4eb-47df-b642-2f5053fe879c" name="Changes" comment=" .">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/d7ffe8bf-fa49-4041-aafb-11f90b830c86.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/d7ffe8bf-fa49-4041-aafb-11f90b830c86.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/controller/BadgeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/controller/BadgeController.java" afterDir="false" />
-    </list>
+    <list default="true" id="e864f6ef-e4eb-47df-b642-2f5053fe879c" name="Changes" comment=" ." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -118,7 +114,7 @@
         <entry key="SpringBootApplicationConfigurationType">
           <value>
             <map>
-              <entry key="GithubmonitoringApplication" value="FAILED" />
+              <entry key="GithubmonitoringApplication" value="STOPPED" />
             </map>
           </value>
         </entry>
@@ -171,7 +167,7 @@
       <workItem from="1755774360554" duration="3980000" />
       <workItem from="1755780968478" duration="530000" />
       <workItem from="1755781517445" duration="180000" />
-      <workItem from="1755781837101" duration="704000" />
+      <workItem from="1755781837101" duration="790000" />
     </task>
     <task id="LOCAL-00001" summary="refactoring">
       <option name="closed" value="true" />
@@ -229,7 +225,15 @@
       <option name="project" value="LOCAL" />
       <updated>1755781451133</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary=" .">
+      <option name="closed" value="true" />
+      <created>1755782549216</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1755782549216</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
