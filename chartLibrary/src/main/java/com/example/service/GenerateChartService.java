@@ -16,7 +16,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 
-public  class GenerateChartService {
+public class GenerateChartService {
 
     private static boolean isDark(ChartInformation info) {
         Theme theme = info.getTheme();
@@ -24,16 +24,16 @@ public  class GenerateChartService {
     }
 
     public byte[] generateChart(ChartInformation info) {
-       try {
-           BufferedImage chartImage = this.buildChart(info).createBufferedImage(800, 400);
-           ByteArrayOutputStream baos = new ByteArrayOutputStream();
-           ImageIO.write(chartImage, "png", baos);
-           return baos.toByteArray();
-       } catch (Exception e) {
-           e.printStackTrace();
-           return null;
-       }
-   }
+        try {
+            BufferedImage chartImage = this.buildChart(info).createBufferedImage(800, 400);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(chartImage, "png", baos);
+            return baos.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public JFreeChart buildChart(ChartInformation info) {
         JFreeChart chart;
@@ -132,7 +132,10 @@ public  class GenerateChartService {
                     linePlot.setDomainGridlinePaint(new Color(200, 200, 200));
                 }
                 linePlot.setOutlineVisible(false);
-                try { linePlot.setShadowGenerator(null); } catch (NoSuchMethodError ignored) { }
+                try {
+                    linePlot.setShadowGenerator(null);
+                } catch (NoSuchMethodError ignored) {
+                }
 
                 LineAndShapeRenderer lineRenderer = (LineAndShapeRenderer) linePlot.getRenderer();
                 lineRenderer.setDrawOutlines(true);

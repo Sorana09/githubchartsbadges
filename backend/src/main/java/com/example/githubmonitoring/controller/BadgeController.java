@@ -3,19 +3,16 @@ package com.example.githubmonitoring.controller;
 import com.example.githubmonitoring.builder.SVGBadge;
 import com.example.service.BadgeService;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/badge")
 @AllArgsConstructor
 @Slf4j
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class BadgeController {
 
     private final BadgeService badgeService;
@@ -89,7 +86,6 @@ public class BadgeController {
     @GetMapping("/language-icon")
     public ResponseEntity<String> languageIcon(@RequestParam String repoUrl) throws Exception {
         String lang = badgeService.getLanguage(repoUrl);
-        // Minimal: render as a badge labeled "lang" to satisfy the URL contract
         String svg = SVGBadge.buildBadge("lang", lang == null ? "" : lang, "#0ea5e9", "light");
         return svg(svg);
     }

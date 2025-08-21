@@ -5,7 +5,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -251,7 +254,10 @@ public class GithubService {
             for (Commit c : commits) {
                 ZonedDateTime zdt = parseDate(c.getCommit().getAuthor().getDate());
                 if (zdt == null) continue;
-                if (zdt.isBefore(firstMonthStart)) { done = true; break; }
+                if (zdt.isBefore(firstMonthStart)) {
+                    done = true;
+                    break;
+                }
                 String key = String.format("%04d-%02d", zdt.getYear(), zdt.getMonthValue());
                 counts.merge(key, 1, Integer::sum);
             }

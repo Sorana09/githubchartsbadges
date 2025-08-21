@@ -12,4 +12,4 @@ build/
 # OS files
 .DS_Store
 
-backend/src/main/resources/
+backend/src/main/resources/application.properties

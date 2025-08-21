@@ -5,7 +5,9 @@ import com.example.domain.RepoInformation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,7 +20,7 @@ import java.util.Map;
 @Slf4j
 public class BadgeService {
     private final GithubService githubService;
-    private  final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate = new RestTemplate();
 
     @Cacheable(value = "stars", key = "#repoUrl")
     public int getStars(String repoUrl) throws Exception {
@@ -76,7 +78,7 @@ public class BadgeService {
     }
 
     @Cacheable(value = "user-stats-badge", key = "#username")
-    public List<Serializable> getUserStats(String username){
+    public List<Serializable> getUserStats(String username) {
         log.info("Generating badge for user: {}", username);
 
         Map<String, Integer> stats = githubService.getUserStats(username);
@@ -92,7 +94,7 @@ public class BadgeService {
         log.debug("Stats for {}: Stars={}, Commits={}, PRs={}, Issues={}, Repos={}, Grade={}",
                 username, stars, commits, prs, issues, repositories, grade);
 
-        return List.of(username,stars,commits,prs,issues,repositories,grade);
+        return List.of(username, stars, commits, prs, issues, repositories, grade);
 
     }
 
@@ -101,18 +103,18 @@ public class BadgeService {
     }
 
     public List<Serializable> getCiStatusBadge(String repoUrl,
-                                   String workflow,
-                                   String theme) throws Exception{
-        String status = this.getLatestWorkflowStatus(repoUrl,workflow);
-        String color = switch (status.toLowerCase()){
+                                               String workflow,
+                                               String theme) throws Exception {
+        String status = this.getLatestWorkflowStatus(repoUrl, workflow);
+        String color = switch (status.toLowerCase()) {
             case "success", "completed" -> "#22c55e";
-            case "failure","failed" -> "#ef4444";
-            case "in_progress","queued","requested" -> "#f59e0b";
+            case "failure", "failed" -> "#ef4444";
+            case "in_progress", "queued", "requested" -> "#f59e0b";
             default -> "#6b7280";
         };
 
         String label = (workflow != null && !workflow.isBlank()) ? ("ci:" + workflow) : "ci";
-        return List.of(label,status,color,theme);
+        return List.of(label, status, color, theme);
     }
 
 
