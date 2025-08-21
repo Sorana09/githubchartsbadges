@@ -4,5 +4,6 @@
 /Users/sorananeculaes/Downloads/gitmon/github-api/src/main/java/com/example/domain/Theme.java
 /Users/sorananeculaes/Downloads/gitmon/github-api/src/main/java/com/example/config/RestTemplateConfig.java
 /Users/sorananeculaes/Downloads/gitmon/github-api/src/main/java/com/example/service/ExtractRepoAndOwner.java
+/Users/sorananeculaes/Downloads/gitmon/github-api/src/main/java/com/example/domain/Stats.java
 /Users/sorananeculaes/Downloads/gitmon/github-api/src/main/java/com/example/domain/RepoInformation.java
 /Users/sorananeculaes/Downloads/gitmon/github-api/src/main/java/com/example/domain/GithubRepoInformation.java
