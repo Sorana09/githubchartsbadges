@@ -11,3 +11,5 @@ build/
 
 # OS files
 .DS_Store
+
+backend/src/main/resources/

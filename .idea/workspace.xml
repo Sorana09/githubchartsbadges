@@ -4,16 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e864f6ef-e4eb-47df-b642-2f5053fe879c" name="Changes" comment="refactored + adding caching">
-      <change afterPath="$PROJECT_DIR$/github-api/src/main/java/com/example/domain/Stats.java" afterDir="false" />
+    <list default="true" id="e864f6ef-e4eb-47df-b642-2f5053fe879c" name="Changes" comment=" .">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/builder/SVGBadgeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/githubmonitoring/builder/SVGBadgeFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/badgeLibrary/src/main/java/com/example/service/BadgeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/badgeLibrary/src/main/java/com/example/service/BadgeService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/badgeLibrary/target/classes/com/example/service/BadgeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/badgeLibrary/target/classes/com/example/service/BadgeService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chartLibrary/src/main/java/com/example/service/GenerateChartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/chartLibrary/src/main/java/com/example/service/GenerateChartService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chartLibrary/target/classes/com/example/service/GenerateChartService$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/chartLibrary/target/classes/com/example/service/GenerateChartService$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chartLibrary/target/classes/com/example/service/GenerateChartService.class" beforeDir="false" afterPath="$PROJECT_DIR$/chartLibrary/target/classes/com/example/service/GenerateChartService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/github-api/src/main/java/com/example/service/GithubService.java" beforeDir="false" afterPath="$PROJECT_DIR$/github-api/src/main/java/com/example/service/GithubService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/github-api/target/classes/com/example/service/GithubService.class" beforeDir="false" afterPath="$PROJECT_DIR$/github-api/target/classes/com/example/service/GithubService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,7 +141,7 @@
       <option name="presentableId" value="Default" />
       <updated>1755596928693</updated>
       <workItem from="1755596930325" duration="3920000" />
-      <workItem from="1755600963100" duration="37878000" />
+      <workItem from="1755600963100" duration="39460000" />
     </task>
     <task id="LOCAL-00001" summary="refactoring">
       <option name="closed" value="true" />
@@ -177,7 +175,15 @@
       <option name="project" value="LOCAL" />
       <updated>1755694148966</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary=" .">
+      <option name="closed" value="true" />
+      <created>1755771591642</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1755771591642</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -188,7 +194,8 @@
     <MESSAGE value="adding new charts" />
     <MESSAGE value="refactored" />
     <MESSAGE value="refactored + adding caching" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactored + adding caching" />
+    <MESSAGE value=" ." />
+    <option name="LAST_COMMIT_MESSAGE" value=" ." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

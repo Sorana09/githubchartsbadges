@@ -50,7 +50,7 @@ public class BadgeService {
         return repoInfo != null ? repoInfo.getWatchers() : 0;
     }
 
-    @Cacheable(value = "last-commit-date", key = "#repoUrl")
+    @Cacheable(value = "last-commit-date", key = "#repoUrl", unless = "#result == null")
     public String getLastCommitDate(String repoUrl) throws Exception {
         GithubRepoInformation repoInfo = getRepoInfo(repoUrl);
         return repoInfo != null ? repoInfo.getLastCommitDate() : "N/A";
