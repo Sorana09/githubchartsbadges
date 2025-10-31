@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e864f6ef-e4eb-47df-b642-2f5053fe879c" name="Changes" comment=" .">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/compose.yml" afterDir="false" />
-    </list>
+    <list default="true" id="e864f6ef-e4eb-47df-b642-2f5053fe879c" name="Changes" comment=" ." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -179,7 +176,7 @@
       <workItem from="1761233430381" duration="671000" />
       <workItem from="1761237610814" duration="14000" />
       <workItem from="1761280962950" duration="25000" />
-      <workItem from="1761919988750" duration="3163000" />
+      <workItem from="1761919988750" duration="3709000" />
     </task>
     <task id="LOCAL-00001" summary="refactoring">
       <option name="closed" value="true" />
